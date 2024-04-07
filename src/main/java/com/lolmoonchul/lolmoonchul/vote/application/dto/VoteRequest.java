@@ -3,7 +3,7 @@ package com.lolmoonchul.lolmoonchul.vote.application.dto;
 import lombok.Getter;
 
 @Getter
-public class VotingRequest {
+public class VoteRequest {
 
     Long postId;
     String voteOption;

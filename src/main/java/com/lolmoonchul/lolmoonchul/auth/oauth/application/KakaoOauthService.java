@@ -35,7 +35,7 @@ public class KakaoOauthService {
         final Member member = createMemberIfNotExist(oauthMember);
 
         final String accessToken = jwtTokenProvider.generateAccessToken(member.getId());
-        final String refreshToken = jwtTokenProvider.generateAccessToken(member.getId());
+        final String refreshToken = jwtTokenProvider.generateRefreshToken(member.getId());
 
         saveOrUpdateRefreshToken(member, refreshToken);
 
@@ -60,8 +60,12 @@ public class KakaoOauthService {
     private Member createMemberIfNotExist(final OauthMember oauthMember) {
         Optional<Member> optionalMember = memberRepository.findByKakaoId(
             oauthMember.kakaoId());
+
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
+            if (member.isDeleted()) {
+                member.comeback();
+            }
             member.updateLoginTimestamp();
             return member;
         }

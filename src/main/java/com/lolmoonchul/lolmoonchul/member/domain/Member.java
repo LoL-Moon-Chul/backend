@@ -74,4 +74,8 @@ public class Member extends BaseEntity {
         this.isDeleted = true;
     }
 
+    public void comeback() {
+        this.isDeleted = false;
+    }
+
 }

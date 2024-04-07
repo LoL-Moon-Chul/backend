@@ -30,10 +30,11 @@ public class MemberService {
     public void leaveMember(final MemberIdDto memberIdDto) {
         final Long memberId = memberIdDto.memberId();
 
-        final Member member = memberRepository.findByKakaoId(memberId)
+        final Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new MemberNotFoundException(memberId));
 
         member.leave();
+
         log.info(String.format("사용자 회원 탈퇴 - request info { memberId : %d }", memberId));
     }
 }

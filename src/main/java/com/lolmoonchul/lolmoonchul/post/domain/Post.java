@@ -13,8 +13,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,12 +46,18 @@ public class Post extends BaseEntity {
     @Column(name = "lol_name")
     private String lolName;
 
+    @Column(name = "vote_a")
+    private int voteA = 0;
+
+    @Column(name = "vote_b")
+    private int voteB = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Vote vote;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> vote = new ArrayList<>();
 
     public Post(String title, String content, String point, String lolName, String line,
         Member member) {
@@ -59,7 +67,6 @@ public class Post extends BaseEntity {
         this.lolName = lolName;
         this.line = line;
         this.member = member;
-        this.vote = new Vote(this);
     }
 
     public Post update(UpdatePostRequest postDto) {
@@ -69,5 +76,25 @@ public class Post extends BaseEntity {
         this.line = postDto.getLine();
         this.lolName = postDto.getLolName();
         return this;
+    }
+
+    public int votingA() {
+        this.voteA += 1;
+        return this.voteA;
+    }
+
+    public int votingB() {
+        this.voteB += 1;
+        return this.voteB;
+    }
+
+    public int votingACancel() {
+        this.voteA -= 1;
+        return this.voteA;
+    }
+
+    public int votingBCancel() {
+        this.voteB -= 1;
+        return this.voteB;
     }
 }

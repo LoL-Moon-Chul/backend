@@ -3,7 +3,8 @@ package com.lolmoonchul.lolmoonchul.vote.presentation;
 import com.lolmoonchul.lolmoonchul.member.configuration.AuthPrincipal;
 import com.lolmoonchul.lolmoonchul.member.configuration.dto.MemberIdDto;
 import com.lolmoonchul.lolmoonchul.vote.application.VoteService;
-import com.lolmoonchul.lolmoonchul.vote.application.dto.VotingRequest;
+import com.lolmoonchul.lolmoonchul.vote.application.dto.VoteRequest;
+import com.lolmoonchul.lolmoonchul.vote.application.dto.VoteResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/vote")
+@RequestMapping("/votes")
 public class VoteController {
 
     private final VoteService voteService;
 
     @PostMapping("/private")
-    public ResponseEntity<Void> voting(
+    public ResponseEntity<VoteResponse> voting(
         @AuthPrincipal MemberIdDto memberIdDto,
-        @RequestBody VotingRequest votingRequest
+        @RequestBody VoteRequest voteRequest
     ) {
-        voteService.voting(memberIdDto, votingRequest);
-        return ResponseEntity.ok().build();
+        VoteResponse voting = voteService.voting(memberIdDto, voteRequest);
+        return ResponseEntity.ok().body(voting);
     }
 }

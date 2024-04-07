@@ -11,7 +11,6 @@ import com.lolmoonchul.lolmoonchul.post.domain.Post;
 import com.lolmoonchul.lolmoonchul.post.domain.PostRepository;
 import com.lolmoonchul.lolmoonchul.post.exception.NotAuthorException;
 import com.lolmoonchul.lolmoonchul.post.exception.PostNotFountException;
-import com.lolmoonchul.lolmoonchul.vote.application.VoteService;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -26,14 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class PostService {
 
-    private final VoteService voteService;
-
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public List<PostResponse> fetchPosts(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
+        Page<Post> posts = postRepository.findAllWithMember(pageable);
         return posts.stream().map(PostResponse::new)
             .collect(Collectors.toList());
     }
@@ -47,10 +44,10 @@ public class PostService {
     }
 
     public PostResponse updatePost(MemberIdDto memberIdDto, UpdatePostRequest postDto) {
-        Post post = postRepository.findById(postDto.getId())
-            .orElseThrow(() -> new PostNotFountException(postDto.getId()));
+        Post post = postRepository.findById(postDto.getPostId())
+            .orElseThrow(() -> new PostNotFountException(postDto.getPostId()));
 
-        validatePostWrite(memberIdDto.memberId(), post.getMember().getId());
+        validatePostAuthor(memberIdDto.memberId(), post.getMember().getId());
         Post updatedPost = post.update(postDto);
         return new PostResponse(updatedPost);
     }
@@ -59,13 +56,13 @@ public class PostService {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFountException(postId));
 
-        validatePostWrite(memberIdDto.memberId(), post.getMember().getId());
+        validatePostAuthor(memberIdDto.memberId(), post.getMember().getId());
 
         postRepository.delete(post);
     }
 
 
-    private void validatePostWrite(Long memberId, Long postMemberId) {
+    private void validatePostAuthor(Long memberId, Long postMemberId) {
         if (!Objects.equals(memberId, postMemberId)) {
             throw new NotAuthorException(memberId, postMemberId);
         }

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class UpdatePostRequest {
 
-    Long id;
+    Long postId;
     String title;
     String content;
     String point;
