@@ -23,7 +23,7 @@
 
   <!-- 운영환경 로그 설정 -->
   <springProfile name="prod">
-    <file>${LOG_PATH}/moco.log</file>
+    <file>${LOG_PATH}/lolmoonchul.log</file>
 
     <!-- INFO 레벨 로그 디렉토리 설정 -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

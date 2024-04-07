@@ -34,7 +34,7 @@ public class Post extends BaseEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content", columnDefinition = "text", nullable = true)
+    @Column(name = "content", nullable = true)
     private String content;
 
     @Column(name = "point")
