@@ -56,10 +56,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            PID=$(ps -ef | grep 'spring' | grep -v grep | awk '{print $2}')
+            PID=$(ps -ef | grep 'lolmoonchul' | grep -v grep | awk '{print $2}')
             if [ ! -z "$PID" ]; then
             echo "Killing $PID"
             kill -9 $PID
             fi
             
-            java -jar ${{ secrets.JAR_PATH }}/build/libs/lolmoonchul-0.0.1-SNAPSHOT.jar &
+            java -jar ${{ secrets.JAR_PATH }}/build/libs/lolmoonchul-0.0.1-SNAPSHOT.jar >/dev/null 2>&1 &
