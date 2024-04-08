@@ -1,6 +1,8 @@
 # yml
 *.yml
 
+# github action 제외
+!.github/workflows/*.yml
 
 ### Gradle ###
 .gradle

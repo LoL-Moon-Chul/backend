@@ -1,0 +1,54 @@
+name: deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: ✅Checkout branch
+        uses: actions/checkout@v3.3.0
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      ## create application.yml & application-dev.yml
+      - name: 🗂️Create application.yml
+        run: |
+          cd ./src/main/resources
+          
+          ## application.yml 파일 생성
+          touch application.yml
+          echo "${{ secrets.APPLICATION_YML }}" >> application.yml
+        shell: bash
+
+      ## ⚙️jar 빌드
+      - name: Grant execute permission for gradlew & Build with Gradle
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
+        shell: bash
+
+
+      - name: execute remote ssh & deploy backend server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.RSSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            PID=$(ps -ef | grep 'spring' | grep -v grep | awk '{print $2}')
+            if [ ! -z "$PID" ]; then
+            echo "Killing $PID"
+            kill $PID
+            fi
+            
+            scp ./build/libs/your-application.jar ${{ secrets.RSSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.JAR_PATH }}
+            
+            nohup java -jar ${{ secrets.JAR_PATH }}/lolmoonchul-0.0.1-SNAPSHOT.jar &
