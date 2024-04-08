@@ -46,7 +46,7 @@ jobs:
             PID=$(ps -ef | grep 'spring' | grep -v grep | awk '{print $2}')
             if [ ! -z "$PID" ]; then
             echo "Killing $PID"
-            kill $PID
+            kill -9 $PID
             fi
             
             scp ./build/libs/your-application.jar ${{ secrets.RSSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.JAR_PATH }}
