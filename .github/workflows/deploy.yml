@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: ✅Checkout branch
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -17,7 +17,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      ## create application.yml & application-dev.yml
+      ## create application.yml
       - name: 🗂️Create application.yml
         run: |
           cd ./src/main/resources
