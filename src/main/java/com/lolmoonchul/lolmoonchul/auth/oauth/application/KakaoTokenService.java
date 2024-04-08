@@ -50,6 +50,7 @@ public class KakaoTokenService {
 
     public OauthMember getOauthMember(final String accessToken) {
         ResponseEntity<String> response = fetchOauthMemberInfo(accessToken);
+        log.info(response.getBody());
         OauthMember oauthMember = jsonUtils.extractOauthMember(response.getBody());
         return oauthMember;
     }

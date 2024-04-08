@@ -4,6 +4,7 @@ import com.lolmoonchul.lolmoonchul.auth.jwt.JwtTokenProvider;
 import com.lolmoonchul.lolmoonchul.auth.oauth.application.dto.OauthMember;
 import com.lolmoonchul.lolmoonchul.auth.oauth.application.dto.Properties;
 import com.lolmoonchul.lolmoonchul.auth.oauth.application.dto.TokenResponse;
+import com.lolmoonchul.lolmoonchul.auth.oauth.util.RandomNameGenerate;
 import com.lolmoonchul.lolmoonchul.member.domain.Member;
 import com.lolmoonchul.lolmoonchul.member.domain.MemberRepository;
 import com.lolmoonchul.lolmoonchul.member.domain.vo.Name;
@@ -27,6 +28,7 @@ public class KakaoOauthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
     private final TokenRepository tokenRepository;
+    private final RandomNameGenerate randomNameGenerate;
 
     public TokenResponse createToken(final String kakaoCode) {
         final String kakaoAccessToken = kakaoTokenService.fetchAccessToken(kakaoCode);
@@ -47,7 +49,7 @@ public class KakaoOauthService {
         OauthMember oauthMember = kakaoTokenService.getOauthMember(oauthAccessToken);
 
         final long kakaoId = oauthMember.kakaoId();
-        final String name = oauthMember.properties().nickname();
+        final String name = randomNameGenerate.generate();
         final String picture = oauthMember.properties().thumbnailImage();
 
         if (name.length() > Name.MAX_LENGTH) {

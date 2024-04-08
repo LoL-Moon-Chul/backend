@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -30,5 +31,16 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
             .excludePathPatterns("/api/token/reissue")
             .excludePathPatterns("/api/*/public/**")
             .addPathPatterns("/api/*/private/**");
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+            .allowedOriginPatterns("*")
+            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedHeaders("Authorization", "Content-Type")
+            .exposedHeaders("Custom-Header")
+            .allowCredentials(true)
+            .maxAge(3600);
     }
 }
