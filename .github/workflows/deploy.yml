@@ -62,4 +62,4 @@ jobs:
             kill -9 $PID
             fi
             
-            nohup java -jar ${{ secrets.JAR_PATH }}/build/libs/lolmoonchul-0.0.1-SNAPSHOT.jar &
+            java -jar ${{ secrets.JAR_PATH }}/build/libs/lolmoonchul-0.0.1-SNAPSHOT.jar &
