@@ -11,9 +11,10 @@ public class CreatePostRequest {
     String content;
     String point;
     String lolName;
-    String line;
+    String lineA;
+    String lineB;
 
     public Post toEntity(Member member) {
-        return new Post(title, content, point, lolName, line, member);
+        return new Post(title, content, point, lolName, lineA, lineB, member);
     }
 }

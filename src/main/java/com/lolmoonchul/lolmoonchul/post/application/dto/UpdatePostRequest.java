@@ -10,6 +10,7 @@ public class UpdatePostRequest {
     String content;
     String point;
     String lolName;
-    String line;
+    String lineA;
+    String lineB;
 
 }

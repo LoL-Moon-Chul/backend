@@ -40,8 +40,11 @@ public class Post extends BaseEntity {
     @Column(name = "point")
     private String point;
 
-    @Column(name = "line")
-    private String line;
+    @Column(name = "line_a")
+    private String lineA;
+
+    @Column(name = "line_b")
+    private String lineB;
 
     @Column(name = "lol_name")
     private String lolName;
@@ -59,13 +62,20 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> vote = new ArrayList<>();
 
-    public Post(String title, String content, String point, String lolName, String line,
+    public Post(
+        String title,
+        String content,
+        String point,
+        String lolName,
+        String lineA,
+        String lineB,
         Member member) {
         this.title = title;
         this.content = content;
         this.point = point;
         this.lolName = lolName;
-        this.line = line;
+        this.lineA = lineA;
+        this.lineB = lineB;
         this.member = member;
     }
 
@@ -73,7 +83,8 @@ public class Post extends BaseEntity {
         this.title = postDto.getTitle();
         this.content = postDto.getContent();
         this.point = postDto.getPoint();
-        this.line = postDto.getLine();
+        this.lineA = postDto.getLineA();
+        this.lineB = postDto.getLineB();
         this.lolName = postDto.getLolName();
         return this;
     }

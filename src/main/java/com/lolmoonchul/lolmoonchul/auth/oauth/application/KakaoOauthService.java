@@ -51,7 +51,6 @@ public class KakaoOauthService {
         final long kakaoId = oauthMember.kakaoId();
         final String name = randomNameGenerate.generate();
         final String picture = oauthMember.properties().thumbnailImage();
-
         if (name.length() > Name.MAX_LENGTH) {
             final String subStringName = name.substring(NAME_BEGIN_INDEX, Name.MAX_LENGTH);
             return new OauthMember(kakaoId, new Properties(subStringName, picture));
@@ -71,7 +70,6 @@ public class KakaoOauthService {
             member.updateLoginTimestamp();
             return member;
         }
-
         final Member member = new Member(
             oauthMember.kakaoId(),
             oauthMember.properties().nickname(),

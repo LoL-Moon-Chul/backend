@@ -14,6 +14,8 @@ public class PostResponse {
     Long postId;
     String title;
     String point;
+    String lineA;
+    String lineB;
     int voteA;
     int voteB;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -26,6 +28,8 @@ public class PostResponse {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.point = post.getPoint();
+        this.lineA = post.getLineA();
+        this.lineB = post.getLineB();
         this.voteA = post.getVoteA();
         this.voteB = post.getVoteB();
         this.createdAt = post.getCreatedAt();
