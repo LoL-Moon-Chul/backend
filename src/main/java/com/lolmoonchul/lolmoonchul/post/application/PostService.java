@@ -35,6 +35,13 @@ public class PostService {
             .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public PostResponse fetchPost(Long postId) {
+        Post post = postRepository.findById(postId)
+            .orElseThrow(() -> new PostNotFountException(postId));
+        return new PostResponse(post);
+    }
+
     public PostResponse createPost(MemberIdDto memberIdDto, CreatePostRequest createPostRequest) {
         Member member = memberRepository.findById(memberIdDto.memberId())
             .orElseThrow(() -> new MemberNotFoundException(memberIdDto.memberId()));

@@ -32,6 +32,12 @@ public class PostController {
         return ResponseEntity.ok().body(postResponses);
     }
 
+    @GetMapping("/public/{postId}")
+    public ResponseEntity<PostResponse> fetchPost(@PathVariable Long postId) {
+        PostResponse postResponses = postService.fetchPost(postId);
+        return ResponseEntity.ok().body(postResponses);
+    }
+
     @PostMapping("/private")
     public ResponseEntity<PostResponse> createPost(
         @AuthPrincipal MemberIdDto memberIdDto,
