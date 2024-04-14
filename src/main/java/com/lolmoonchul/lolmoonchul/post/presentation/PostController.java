@@ -4,7 +4,6 @@ import com.lolmoonchul.lolmoonchul.member.configuration.AuthPrincipal;
 import com.lolmoonchul.lolmoonchul.member.configuration.dto.MemberIdDto;
 import com.lolmoonchul.lolmoonchul.post.application.PostService;
 import com.lolmoonchul.lolmoonchul.post.application.dto.CreatePostRequest;
-import com.lolmoonchul.lolmoonchul.post.application.dto.FetchPostResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.FetchPostsResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.PostResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.UpdatePostRequest;
@@ -34,8 +33,8 @@ public class PostController {
     }
 
     @GetMapping("/public/{postId}")
-    public ResponseEntity<FetchPostResponse> fetchPost(@PathVariable Long postId) {
-        FetchPostResponse postResponses = postService.fetchPost(postId);
+    public ResponseEntity<PostResponse> fetchPost(@PathVariable Long postId) {
+        PostResponse postResponses = postService.fetchPost(postId);
         return ResponseEntity.ok().body(postResponses);
     }
 

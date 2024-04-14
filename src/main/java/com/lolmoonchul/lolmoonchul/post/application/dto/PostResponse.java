@@ -13,6 +13,7 @@ public class PostResponse {
     String memberImageUrl;
     Long postId;
     String title;
+    String content;
     String point;
     String lineA;
     String lineB;
@@ -27,6 +28,7 @@ public class PostResponse {
         this.memberImageUrl = post.getMember().getProfileImageUrl();
         this.postId = post.getId();
         this.title = post.getTitle();
+        this.content = post.getContent();
         this.point = post.getPoint();
         this.lineA = post.getLineA();
         this.lineB = post.getLineB();
