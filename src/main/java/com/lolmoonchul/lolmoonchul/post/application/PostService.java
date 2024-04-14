@@ -5,6 +5,7 @@ import com.lolmoonchul.lolmoonchul.member.domain.Member;
 import com.lolmoonchul.lolmoonchul.member.domain.MemberRepository;
 import com.lolmoonchul.lolmoonchul.member.exception.member.MemberNotFoundException;
 import com.lolmoonchul.lolmoonchul.post.application.dto.CreatePostRequest;
+import com.lolmoonchul.lolmoonchul.post.application.dto.FetchPostsResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.PostResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.UpdatePostRequest;
 import com.lolmoonchul.lolmoonchul.post.domain.Post;
@@ -13,7 +14,6 @@ import com.lolmoonchul.lolmoonchul.post.exception.NotAuthorException;
 import com.lolmoonchul.lolmoonchul.post.exception.PostNotFountException;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +29,15 @@ public class PostService {
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public List<PostResponse> fetchPosts(Pageable pageable) {
+    public FetchPostsResponse fetchPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAllWithMember(pageable);
-        return posts.stream().map(PostResponse::new)
-            .collect(Collectors.toList());
+        List<PostResponse> postResponses = posts.stream().map(PostResponse::new)
+            .toList();
+
+        long totalElements = posts.getTotalElements();
+        int totalPages = posts.getTotalPages();
+
+        return new FetchPostsResponse(postResponses, totalElements, totalPages);
     }
 
     @Transactional(readOnly = true)

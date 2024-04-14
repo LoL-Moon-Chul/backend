@@ -4,9 +4,9 @@ import com.lolmoonchul.lolmoonchul.member.configuration.AuthPrincipal;
 import com.lolmoonchul.lolmoonchul.member.configuration.dto.MemberIdDto;
 import com.lolmoonchul.lolmoonchul.post.application.PostService;
 import com.lolmoonchul.lolmoonchul.post.application.dto.CreatePostRequest;
+import com.lolmoonchul.lolmoonchul.post.application.dto.FetchPostsResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.PostResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.UpdatePostRequest;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/public")
-    public ResponseEntity<List<PostResponse>> fetchPosts(Pageable pageable) {
-        List<PostResponse> postResponses = postService.fetchPosts(pageable);
+    public ResponseEntity<FetchPostsResponse> fetchPosts(Pageable pageable) {
+        FetchPostsResponse postResponses = postService.fetchPosts(pageable);
         return ResponseEntity.ok().body(postResponses);
     }
 
