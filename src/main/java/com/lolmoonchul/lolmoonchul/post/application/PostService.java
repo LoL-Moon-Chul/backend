@@ -5,6 +5,7 @@ import com.lolmoonchul.lolmoonchul.member.domain.Member;
 import com.lolmoonchul.lolmoonchul.member.domain.MemberRepository;
 import com.lolmoonchul.lolmoonchul.member.exception.member.MemberNotFoundException;
 import com.lolmoonchul.lolmoonchul.post.application.dto.CreatePostRequest;
+import com.lolmoonchul.lolmoonchul.post.application.dto.FetchPostResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.FetchPostsResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.PostResponse;
 import com.lolmoonchul.lolmoonchul.post.application.dto.UpdatePostRequest;
@@ -41,10 +42,10 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostResponse fetchPost(Long postId) {
+    public FetchPostResponse fetchPost(Long postId) {
         Post post = postRepository.findById(postId)
             .orElseThrow(() -> new PostNotFountException(postId));
-        return new PostResponse(post);
+        return new FetchPostResponse(post);
     }
 
     public PostResponse createPost(MemberIdDto memberIdDto, CreatePostRequest createPostRequest) {
