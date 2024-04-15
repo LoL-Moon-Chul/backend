@@ -11,7 +11,7 @@ import com.lolmoonchul.lolmoonchul.post.application.dto.UpdatePostRequest;
 import com.lolmoonchul.lolmoonchul.post.domain.Post;
 import com.lolmoonchul.lolmoonchul.post.domain.PostRepository;
 import com.lolmoonchul.lolmoonchul.post.exception.NotAuthorException;
-import com.lolmoonchul.lolmoonchul.post.exception.PostNotFountException;
+import com.lolmoonchul.lolmoonchul.post.exception.PostNotFoundException;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse fetchPost(Long postId) {
         Post post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFountException(postId));
+            .orElseThrow(() -> new PostNotFoundException(postId));
         return new PostResponse(post);
     }
 
@@ -57,7 +57,7 @@ public class PostService {
 
     public PostResponse updatePost(MemberIdDto memberIdDto, UpdatePostRequest postDto) {
         Post post = postRepository.findById(postDto.getPostId())
-            .orElseThrow(() -> new PostNotFountException(postDto.getPostId()));
+            .orElseThrow(() -> new PostNotFoundException(postDto.getPostId()));
 
         validatePostAuthor(memberIdDto.memberId(), post.getMember().getId());
         Post updatedPost = post.update(postDto);
@@ -66,7 +66,7 @@ public class PostService {
 
     public void removePost(MemberIdDto memberIdDto, Long postId) {
         Post post = postRepository.findById(postId)
-            .orElseThrow(() -> new PostNotFountException(postId));
+            .orElseThrow(() -> new PostNotFoundException(postId));
 
         validatePostAuthor(memberIdDto.memberId(), post.getMember().getId());
 
