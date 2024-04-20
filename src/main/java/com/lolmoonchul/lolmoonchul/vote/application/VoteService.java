@@ -13,6 +13,7 @@ import com.lolmoonchul.lolmoonchul.vote.application.dto.VoteResponse;
 import com.lolmoonchul.lolmoonchul.vote.domain.Vote;
 import com.lolmoonchul.lolmoonchul.vote.domain.VoteRepository;
 import com.lolmoonchul.lolmoonchul.vote.exception.InvalidVoteOptionException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,8 +50,8 @@ public class VoteService {
     }
 
     private VoteResponse createVote(Post post, Member member, String voteOption) {
-        Vote voted = new Vote(post, member);
         int count = voteOption.equals("A") ? post.votingA() : post.votingB();
+        Vote voted = new Vote(post, member, voteOption);
 
         voteRepository.save(voted);
 
@@ -61,8 +62,14 @@ public class VoteService {
         Member member = getMember(memberIdDto.memberId());
         Post post = getPost(postId);
 
-        boolean isUserVotedToPost = voteRepository.existsByMemberAndPost(member, post);
-        return new VoteCheckResponse(isUserVotedToPost);
+        Optional<Vote> isUserVotedToPost = voteRepository.findByMemberAndPost(member, post);
+
+        if (isUserVotedToPost.isPresent()) {
+            final String voteOption = isUserVotedToPost.get().getVoteOption();
+            return new VoteCheckResponse(true, voteOption);
+        }
+
+        return new VoteCheckResponse(false);
     }
 
     private Member getMember(Long memberId) {

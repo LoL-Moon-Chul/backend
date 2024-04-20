@@ -3,6 +3,7 @@ package com.lolmoonchul.lolmoonchul.vote.domain;
 import com.lolmoonchul.lolmoonchul.common.domain.BaseEntity;
 import com.lolmoonchul.lolmoonchul.member.domain.Member;
 import com.lolmoonchul.lolmoonchul.post.domain.Post;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,8 +34,12 @@ public class Vote extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Vote(Post post, Member member) {
+    @Column(name = "vote_option")
+    private String voteOption;
+
+    public Vote(Post post, Member member, String voteOption) {
         this.post = post;
         this.member = member;
+        this.voteOption = voteOption;
     }
 }
